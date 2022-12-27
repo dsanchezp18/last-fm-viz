@@ -17,5 +17,5 @@ library(lastfmR)
 
 # Acquire data from Lastfm --------------------------------------------------------------------------------
 
-
+scrobbles <- get_scrobbles(user = 'damage_inc7')
 
