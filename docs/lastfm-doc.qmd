@@ -1,0 +1,71 @@
+---
+title: "Wrangling Last.fm data with R"
+author: "Daniel Sánchez"
+format: html
+knitr:
+  opts_chunk: 
+    echo: true
+---
+
+# Intro
+
+This is the main project document, which includes all of the code needed to clean, analyze and visualize my Last.fm  data in R.
+
+## Preliminaries
+
+I load the libraries I will need in here. Mostly it is just the main *lastfmR* package which is currently uploaded to [GitHub](https://github.com/ppatrzyk/lastfmR) now, the typical *tidyverse* stuff and *lubridate* for date management.
+
+```{r}
+#| label: setup
+#| message: false
+
+library(lastfmR) # If not downloaded, use remotes::install_github("ppatrzyk/lastfmR")
+library(tidyverse)
+library(lubridate)
+```
+
+# Getting the data
+
+I will use the main function from the *lastfmR* package, which is `get_scrobbles()`, to get all of the scrobbles (songs listened/streamed) from my Last.fm account.
+
+```{r}
+#| label: get-data
+#| eval: false
+scrobbles <- get_scrobbles('damage_inc7', timezone = 'America/Bogota')
+scrobbles
+```
+
+The `timezone` argument cannot be left as is since it will give me times which are not correct given the timezones. I listened to the majority of my music in Quito, Ecuador, so using that timezone fixes most of the problem, yet I will need to deal with some timezone changes later.
+
+# Fixing timezones
+
+I need to select the data beginning mid-August 2022 (when I travelled to Canada) and have it transformed to Canadian Pacific time. While I could filter out all pre-trip data from Last.fm and bind it to another request to Last.fm but with Vancouver time, I choose to use *lubridate* for a smoother experience.
+
+```{r}
+#| label: timezone
+scrobbles_can <-
+  scrobbles %>% 
+  filter(date >= as.POSIXct('2022-09-23 00:00:00', timezone = 'America/Bogota'))
+
+```
+
+We now transform to another timezone:
+
+```{r}
+#| label: timezone1
+scrobbles_can <-
+  scrobbles_can %>% 
+  mutate(date = force_tz(scrobbles_can$date, tz = 'Canada/Pacific'))
+```
+
+We bind the new data back to the main database, but not without eliminating the wrong timezone data so it works well:
+
+```{r}
+#| label: timezone2
+scrobbles <-
+  scrobbles %>% 
+  filter(date < as.POSIXct('2022-09-23 00:00:00', timezone = 'America/Bogota')) %>% 
+  bind_rows(scrobbles_can)
+```
+
+
