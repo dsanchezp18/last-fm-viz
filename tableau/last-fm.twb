@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20222.22.1203.1131                               -->
+<workbook original-version='18.1' source-build='2022.2.5 (20222.22.1203.1131)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <_.fcp.AnimationOnByDefault.true...AnimationOnByDefault />
+    <_.fcp.MarkAnimation.true...MarkAnimation />
+    <_.fcp.ObjectModelEncapsulateLegacy.true...ObjectModelEncapsulateLegacy />
+    <_.fcp.ObjectModelTableType.true...ObjectModelTableType />
+    <_.fcp.SchemaViewerObjectModel.true...SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <_.fcp.AnimationOnByDefault.false...style>
+    <_.fcp.AnimationOnByDefault.false..._.fcp.MarkAnimation.true...style-rule element='animation'>
+      <_.fcp.AnimationOnByDefault.false...format attr='animation-on' value='ao-on' />
+    </_.fcp.AnimationOnByDefault.false..._.fcp.MarkAnimation.true...style-rule>
+  </_.fcp.AnimationOnByDefault.false...style>
+  <datasources>
+    <datasource caption='scrobbles' inline='true' name='federated.1wmukzb1wrnhuy17g2kiw1rhpd1f' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='scrobbles' name='textscan.0slcz5d0uppq3v1h3d7p21umoniw'>
+            <connection class='textscan' directory='C:/Users/mango/Documents/GitHub/last-fm-viz/data' filename='scrobbles.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <_.fcp.ObjectModelEncapsulateLegacy.false...relation connection='textscan.0slcz5d0uppq3v1h3d7p21umoniw' name='scrobbles.csv' table='[scrobbles#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='integer' name='F1' ordinal='0' />
+            <column datatype='datetime' name='date' ordinal='1' />
+            <column datatype='string' name='artist' ordinal='2' />
+            <column datatype='string' name='track' ordinal='3' />
+            <column datatype='string' name='album' ordinal='4' />
+          </columns>
+        </_.fcp.ObjectModelEncapsulateLegacy.false...relation>
+        <_.fcp.ObjectModelEncapsulateLegacy.true...relation connection='textscan.0slcz5d0uppq3v1h3d7p21umoniw' name='scrobbles.csv' table='[scrobbles#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='integer' name='F1' ordinal='0' />
+            <column datatype='datetime' name='date' ordinal='1' />
+            <column datatype='string' name='artist' ordinal='2' />
+            <column datatype='string' name='track' ordinal='3' />
+            <column datatype='string' name='album' ordinal='4' />
+          </columns>
+        </_.fcp.ObjectModelEncapsulateLegacy.true...relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[scrobbles.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>F1</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[F1]</local-name>
+            <parent-name>[scrobbles.csv]</parent-name>
+            <remote-alias>F1</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date</remote-name>
+            <remote-type>135</remote-type>
+            <local-name>[date]</local-name>
+            <parent-name>[scrobbles.csv]</parent-name>
+            <remote-alias>date</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>artist</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[artist]</local-name>
+            <parent-name>[scrobbles.csv]</parent-name>
+            <remote-alias>artist</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>track</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[track]</local-name>
+            <parent-name>[scrobbles.csv]</parent-name>
+            <remote-alias>track</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>album</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[album]</local-name>
+            <parent-name>[scrobbles.csv]</parent-name>
+            <remote-alias>album</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <_.fcp.ObjectModelTableType.true...column caption='scrobbles.csv' datatype='table' name='[__tableau_internal_object_id__].[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]' role='measure' type='quantitative' />
+      <column caption='Album' datatype='string' name='[album]' role='dimension' type='nominal' />
+      <column caption='Artist' datatype='string' name='[artist]' role='dimension' type='nominal' />
+      <column caption='Date' datatype='datetime' name='[date]' role='dimension' type='ordinal' />
+      <column caption='Track' datatype='string' name='[track]' role='dimension' type='nominal' />
+      <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Canada&quot;' />
+      </semantic-values>
+      <_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
+        <objects>
+          <object caption='scrobbles.csv' id='scrobbles.csv_7E28749011444929AA2AA977B703DFC9'>
+            <properties context=''>
+              <relation connection='textscan.0slcz5d0uppq3v1h3d7p21umoniw' name='scrobbles.csv' table='[scrobbles#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+                  <column datatype='integer' name='F1' ordinal='0' />
+                  <column datatype='datetime' name='date' ordinal='1' />
+                  <column datatype='string' name='artist' ordinal='2' />
+                  <column datatype='string' name='track' ordinal='3' />
+                  <column datatype='string' name='album' ordinal='4' />
+                </columns>
+              </relation>
+            </properties>
+          </object>
+        </objects>
+      </_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Scrobbles vs. Time'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='scrobbles' name='federated.1wmukzb1wrnhuy17g2kiw1rhpd1f' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1wmukzb1wrnhuy17g2kiw1rhpd1f'>
+            <_.fcp.ObjectModelTableType.false...column caption='scrobbles.csv' datatype='integer' name='[__tableau_internal_object_id__].[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]' role='measure' type='quantitative' />
+            <column-instance column='[__tableau_internal_object_id__].[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:scrobbles.csv_7E28749011444929AA2AA977B703DFC9:qk]' pivot='key' type='quantitative' />
+            <_.fcp.ObjectModelTableType.true...column caption='scrobbles.csv' datatype='table' name='[__tableau_internal_object_id__].[scrobbles.csv_7E28749011444929AA2AA977B703DFC9]' role='measure' type='quantitative' />
+            <column caption='Date' datatype='datetime' name='[date]' role='dimension' type='ordinal' />
+            <column-instance column='[date]' derivation='Year-Trunc' name='[tyr:date:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='title' class='0' field='[federated.1wmukzb1wrnhuy17g2kiw1rhpd1f].[__tableau_internal_object_id__].[cnt:scrobbles.csv_7E28749011444929AA2AA977B703DFC9:qk]' scope='rows' value='Number of Scrobbles' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#0b6623' />
+                <format attr='has-stroke' value='true' />
+                <format attr='stroke-color' value='#000000' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.1wmukzb1wrnhuy17g2kiw1rhpd1f].[__tableau_internal_object_id__].[cnt:scrobbles.csv_7E28749011444929AA2AA977B703DFC9:qk]</rows>
+        <cols>[federated.1wmukzb1wrnhuy17g2kiw1rhpd1f].[tyr:date:ok]</cols>
+      </table>
+      <simple-id uuid='{8107D010-0021-41D2-A51B-CD3C1713AB03}' />
+    </worksheet>
+  </worksheets>
+  <windows source-height='37'>
+    <window class='worksheet' maximized='true' name='Scrobbles vs. Time'>
+      <cards>
+        <edge name='left'>
+          <strip size='200'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='38'>
+            <card type='columns' />
+          </strip>
+          <strip size='38'>
+            <card type='rows' />
+          </strip>
+          <strip size='38'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+        <highlight>
+          <color-one-way>
+            <field>[federated.1wmukzb1wrnhuy17g2kiw1rhpd1f].[__tableau_internal_object_id__].[cnt:scrobbles.csv_7E28749011444929AA2AA977B703DFC9:qk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{FB26DF38-D5AF-4FF5-9E8F-94188B431BAD}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Scrobbles vs. Time' width='192'>
+      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
+      AElFTkSuQmCC
+    </thumbnail>
+  </thumbnails>
+</workbook>
