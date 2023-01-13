@@ -9,7 +9,7 @@ knitr:
 
 # Intro
 
-This is the main project document, which includes all of the code needed to clean, analyze and visualize my Last.fm  data in R.
+This is the main project document, which includes all of the code needed to clean, analyze and visualize my Last.fm data in R.
 
 ## Preliminaries
 
@@ -30,7 +30,6 @@ I will use the main function from the *lastfmR* package, which is `get_scrobbles
 
 ```{r}
 #| label: get-data
-#| eval: false
 scrobbles <- get_scrobbles('damage_inc7', timezone = 'America/Bogota')
 scrobbles
 ```
@@ -55,7 +54,7 @@ We now transform to another timezone:
 #| label: timezone1
 scrobbles_can <-
   scrobbles_can %>% 
-  mutate(date = force_tz(scrobbles_can$date, tz = 'Canada/Pacific'))
+  mutate(date = with_tz(scrobbles_can$date, tz = 'Canada/Pacific'))
 ```
 
 We bind the new data back to the main database, but not without eliminating the wrong timezone data so it works well:
@@ -67,5 +66,17 @@ scrobbles <-
   filter(date < as.POSIXct('2022-09-23 00:00:00', timezone = 'America/Bogota')) %>% 
   bind_rows(scrobbles_can)
 ```
+
+# Exporting the data
+
+The data gets exported to a csv to use in other software. 
+
+```{r}
+# | label: data-export
+
+write.csv(scrobbles, '../data/scrobbles.csv')
+
+```
+
 
 
