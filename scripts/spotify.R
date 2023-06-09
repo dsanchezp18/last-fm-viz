@@ -5,16 +5,20 @@
 library(spotifyr)
 library(tidyverse)
 
-# Set environment variables for spotify (so that the package works)
+# Run the script to set the Spotify credentials (hidden)
 
-#Sys.setenv(SPOTIFY_CLIENT_ID = '')
-#Sys.setenv(SPOTIFY_CLIENT_SECRET = '')
+source('scripts/credentials.R')
 
 # Get the Spotify access token
 
-access_token <- get_spotify_access_token()
+access_token <- get_spotify_access_token(client_id = Sys.getenv('SPOTIFY_CLIENT_ID'),
+                                         client_secret = Sys.getenv('SPOTIFY_CLIENT_SECRET'))
 
-# Get my all time top tracks
+# Get stuff from Epica: at the album level.
 
-get_my_top_artists_or_tracks(type = 'artists', limit = 5) %>% 
-  select(name, genres)
+epica <- 'epica'
+epica_id <- '5HA5aLY3jJV7eimXWkRBBp'
+
+epica_info <-
+  get_artist(epica_id, access_token)
+
