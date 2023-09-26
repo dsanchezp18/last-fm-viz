@@ -64,7 +64,8 @@ We bind the new data back to the main database, but not without eliminating the 
 scrobbles <-
   scrobbles %>% 
   filter(date < as.POSIXct('2022-09-23 00:00:00', timezone = 'America/Bogota')) %>% 
-  bind_rows(scrobbles_can)
+  bind_rows(scrobbles_can) %>% 
+  filter(!is.na(date))
 ```
 
 # Exporting the data
