@@ -70,12 +70,12 @@ scrobbles <-
 
 # Exporting the data
 
-The data gets exported to a csv to use in other software. 
+The data gets exported to a csv in `data/scrobbles.csv` for use in other software.
 
 ```{r}
 # | label: data-export
 
-write.csv(scrobbles, '../data/scrobbles.csv')
+write.csv(scrobbles, 'data/scrobbles.csv')
 
 ```
 
