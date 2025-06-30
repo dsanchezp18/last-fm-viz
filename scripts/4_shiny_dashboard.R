@@ -24,6 +24,7 @@ library(dplyr)
 library(ggplot2)
 library(lubridate)
 
+
 # Load data ---------------------------------------------------------------
 scrobbles <- read_csv("data/scrobbles.csv", show_col_types = FALSE)
 scrobbles$date <- as.POSIXct(scrobbles$date, tz = "UTC")
