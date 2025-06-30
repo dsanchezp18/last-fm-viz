@@ -30,7 +30,7 @@ I will use the main function from the *lastfmR* package, which is `get_scrobbles
 
 ```{r}
 #| label: get-data
-scrobbles <- get_scrobbles('damage_inc7', timezone = 'America/Bogota')
+scrobbles <- get_scrobbles('damage_inc7', tz = 'America/Bogota')
 scrobbles
 ```
 
@@ -44,7 +44,7 @@ I need to select the data beginning mid-August 2022 (when I travelled to Canada)
 #| label: timezone
 scrobbles_can <-
   scrobbles %>% 
-  filter(date >= as.POSIXct('2022-09-23 00:00:00', timezone = 'America/Bogota'))
+  filter(date >= as.POSIXct('2022-09-23 00:00:00', tz = 'America/Bogota'))
 
 ```
 
@@ -63,7 +63,7 @@ We bind the new data back to the main database, but not without eliminating the 
 #| label: timezone2
 scrobbles <-
   scrobbles %>% 
-  filter(date < as.POSIXct('2022-09-23 00:00:00', timezone = 'America/Bogota')) %>% 
+  filter(date < as.POSIXct('2022-09-23 00:00:00', tz = 'America/Bogota')) %>% 
   bind_rows(scrobbles_can) %>% 
   filter(!is.na(date))
 ```
