@@ -6,3 +6,10 @@ The obtainment, cleaning and preliminary analysis of the data was done through R
 
 You may see the main visualization part of the project in my [Tableau Public account](https://public.tableau.com/app/profile/dsanchezp18/viz/VisualizingScrobblesfromLast_fm/VisualizingListeningTrends).
 
+An interactive Shiny dashboard built with the **flexdashboard** package is also
+available. Launch it with:
+
+```r
+rmarkdown::run("scripts/scrobbles_flexdashboard.Rmd")
+```
+

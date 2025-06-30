@@ -1,0 +1,94 @@
+---
+title: "Last.fm Scrobbles Dashboard"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+# load scrobbles data
+scrobbles <- read_csv("../data/scrobbles.csv", show_col_types = FALSE)
+scrobbles$date <- as.POSIXct(scrobbles$date, tz = "UTC")
+```
+
+Column {data-width=250}
+-------------------------------------
+
+### Total scrobbles
+
+```{r}
+valueBox(nrow(scrobbles), caption = "Scrobbles", icon = "music")
+```
+
+### Top artist
+
+```{r}
+top_artist <- scrobbles %>%
+  count(artist, sort = TRUE) %>%
+  slice(1)
+valueBox(top_artist$n, caption = top_artist$artist, icon = "person-fill")
+```
+
+Column
+-------------------------------------
+
+### Top Artists
+
+```{r}
+renderPlot({
+  scrobbles %>%
+    count(artist, sort = TRUE) %>%
+    top_n(10) %>%
+    mutate(artist = reorder(artist, n)) %>%
+    ggplot(aes(artist, n)) +
+    geom_col(fill = "steelblue") +
+    coord_flip() +
+    labs(x = NULL, y = "Scrobbles")
+})
+```
+
+### Listening over time
+
+```{r}
+renderPlot({
+  scrobbles %>%
+    mutate(day = as.Date(date)) %>%
+    count(day) %>%
+    ggplot(aes(day, n)) +
+    geom_line(color = "darkred") +
+    labs(x = "Date", y = "Scrobbles per day")
+})
+```
+
+### Tracks for selected artist
+
+```{r}
+inputPanel(
+  selectizeInput("artist_select", "Artist",
+                 choices = sort(unique(scrobbles$artist)),
+                 multiple = FALSE)
+)
+
+renderPlot({
+  selected <- scrobbles
+  if (!is.null(input$artist_select) && input$artist_select != "") {
+    selected <- selected %>% filter(artist == input$artist_select)
+  }
+  selected %>%
+    count(track, sort = TRUE) %>%
+    top_n(10) %>%
+    mutate(track = reorder(track, n)) %>%
+    ggplot(aes(track, n)) +
+    geom_col(fill = "darkgreen") +
+    coord_flip() +
+    labs(x = NULL, y = "Scrobbles",
+         title = paste0("Top Tracks - ", input$artist_select))
+})
+```
