@@ -4,12 +4,6 @@ This is the GitHub repository which holds all of the work required to reproduce 
 
 The obtainment, cleaning and preliminary analysis of the data was done through R, and can be executed by downloading this repository to your computer and rendering the `.qmd` script or running all code chunks in that document. 
 
-You may see the main visualization part of the project in my [Tableau Public account](https://public.tableau.com/app/profile/dsanchezp18/viz/VisualizingScrobblesfromLast_fm/VisualizingListeningTrends).
+You may see the main visualization part of the project in my [Tableau Public account](hhttps://public.tableau.com/views/VisualizingScrobblesfromLast_fm/VisualizingListeningTrendsfromLast_fm?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link).
 
-An interactive Shiny dashboard built with the **flexdashboard** package is also
-available. Launch it with:
-
-```r
-rmarkdown::run("scripts/scrobbles_flexdashboard.Rmd")
-```
-
+An interactive Shiny dashboard built with the **flexdashboard** package is currently in development. 
