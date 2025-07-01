@@ -33,7 +33,7 @@ scrobbles$day <- as.Date(scrobbles$date)
 # Build the Shiny UI -------------------------------------------------------
 
 ui <- fluidPage(
-  titlePanel("Last.fm Listening Trends"),
+  titlePanel("Visualizing Scrobbles from Last.fm with Shiny"),
   sidebarLayout(
     sidebarPanel(
       dateRangeInput(
