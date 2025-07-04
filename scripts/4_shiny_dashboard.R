@@ -29,7 +29,6 @@ library(lubridate)
 scrobbles <- read_csv("data/scrobbles.csv", show_col_types = FALSE)
 scrobbles$date <- as.POSIXct(scrobbles$date, tz = "UTC")
 scrobbles$day <- as.Date(scrobbles$date)
-
 # Build the Shiny UI -------------------------------------------------------
 
 ui <- fluidPage(
@@ -43,11 +42,43 @@ ui <- fluidPage(
         end = max(scrobbles$day)
       ),
       selectizeInput(
-        "artist",
-        "Artist",
-        choices = c("All", sort(unique(scrobbles$artist))),
+        "year",
+        "Year",
+        choices = c("All", sort(unique(year(scrobbles$date)))),
         selected = "All",
         multiple = FALSE
+      ),
+      selectizeInput(
+        "month",
+        "Month",
+        choices = c("All", month.name),
+        selected = "All",
+        multiple = FALSE
+      ),
+      selectizeInput(
+        "period",
+        "Period",
+        choices = c("All", sort(unique(format(scrobbles$date, "%Y-%m")))),
+        selected = "All",
+        multiple = FALSE
+      ),
+      textInput(
+        "artist",
+        "Artist (search)",
+        value = "",
+        placeholder = "Search for artist..."
+      ),
+      textInput(
+        "album",
+        "Album (search)",
+        value = "",
+        placeholder = "Search for album..."
+      ),
+      textInput(
+        "track",
+        "Track (search)",
+        value = "",
+        placeholder = "Search for track..."
       ),
       numericInput(
         "top_n",
@@ -66,7 +97,9 @@ ui <- fluidPage(
       tabsetPanel(
         tabPanel(
           "Overall Trends",
-          plotOutput("time_plot"),
+          plotOutput("time_plot", 
+                    click = "time_plot_click",
+                    dblclick = "time_plot_dblclick"),
           plotOutput("top_artists")
         ),
         tabPanel(
@@ -82,12 +115,41 @@ ui <- fluidPage(
 # Define server -----------------------------------------------------------
 
 server <- function(input, output, session) {
+  # Reactive values for drill-down functionality
+  values <- reactiveValues(
+    drill_level = "year",  # Can be "year", "month", or "day"
+    selected_year = NULL,
+    selected_month = NULL
+  )
+  
   filtered <- reactive({
     df <- scrobbles %>%
       filter(day >= input$date_range[1], day <= input$date_range[2])
-    if (input$artist != "All") {
-      df <- df %>% filter(artist == input$artist)
+    
+    if (input$year != "All") {
+      df <- df %>% filter(year(date) == as.numeric(input$year))
     }
+    
+    if (input$month != "All") {
+      df <- df %>% filter(month(date, label = TRUE, abbr = FALSE) == input$month)
+    }
+    
+    if (input$period != "All") {
+      df <- df %>% filter(format(date, "%Y-%m") == input$period)
+    }
+    
+    if (input$artist != "") {
+      df <- df %>% filter(grepl(input$artist, artist, ignore.case = TRUE))
+    }
+    
+    if (input$album != "") {
+      df <- df %>% filter(grepl(input$album, album, ignore.case = TRUE))
+    }
+    
+    if (input$track != "") {
+      df <- df %>% filter(grepl(input$track, track, ignore.case = TRUE))
+    }
+    
     df
   })
 
@@ -104,11 +166,113 @@ server <- function(input, output, session) {
   })
 
   output$time_plot <- renderPlot({
-    filtered() %>%
-      count(day) %>%
-      ggplot(aes(day, n)) +
-      geom_line(color = "steelblue") +
-      labs(x = "Date", y = "Scrobbles per day")
+    df <- filtered()
+    
+    if (values$drill_level == "year") {
+      # Year level - show scrobbles by year
+      plot_data <- df %>%
+        mutate(year = year(date)) %>%
+        count(year) %>%
+        mutate(label = as.character(year))
+      
+      p <- ggplot(plot_data, aes(x = reorder(label, year), y = n)) +
+        geom_col(fill = "steelblue", alpha = 0.8) +
+        labs(x = "Year", y = "Total Scrobbles", 
+             title = "Scrobbles by Year (Click to drill down to months)") +
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      
+    } else if (values$drill_level == "month") {
+      # Month level - show scrobbles by month for selected year
+      plot_data <- df %>%
+        filter(year(date) == values$selected_year) %>%
+        mutate(
+          month_num = month(date),
+          month_name = month(date, label = TRUE, abbr = FALSE)
+        ) %>%
+        count(month_num, month_name) %>%
+        mutate(label = as.character(month_name))
+      
+      p <- ggplot(plot_data, aes(x = reorder(label, month_num), y = n)) +
+        geom_col(fill = "darkgreen", alpha = 0.8) +
+        labs(x = "Month", y = "Total Scrobbles",
+             title = paste("Scrobbles by Month in", values$selected_year, "(Click to drill down to days)")) +
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      
+    } else {
+      # Day level - show scrobbles by day for selected month and year
+      plot_data <- df %>%
+        filter(
+          year(date) == values$selected_year,
+          month(date) == values$selected_month
+        ) %>%
+        count(day) %>%
+        mutate(label = format(day, "%d"))
+      
+      p <- ggplot(plot_data, aes(x = day, y = n)) +
+        geom_col(fill = "darkred", alpha = 0.8) +
+        labs(x = "Day", y = "Total Scrobbles",
+             title = paste("Scrobbles by Day in", 
+                          month.name[values$selected_month], 
+                          values$selected_year)) +
+        theme_minimal() +
+        scale_x_date(date_labels = "%d", date_breaks = "3 days")
+    }
+    
+    p
+  })
+  
+  # Handle click events for drill-down
+  observeEvent(input$time_plot_click, {
+    click_data <- input$time_plot_click
+    df <- filtered()
+    
+    if (values$drill_level == "year") {
+      # Drill down to month level
+      if (!is.null(click_data$x)) {
+        # Find the clicked year
+        years <- df %>%
+          mutate(year = year(date)) %>%
+          count(year) %>%
+          arrange(year) %>%
+          pull(year)
+        
+        clicked_year <- years[round(click_data$x)]
+        values$selected_year <- clicked_year
+        values$drill_level <- "month"
+      }
+    } else if (values$drill_level == "month") {
+      # Drill down to day level
+      if (!is.null(click_data$x)) {
+        # Find the clicked month
+        months <- df %>%
+          filter(year(date) == values$selected_year) %>%
+          mutate(month_num = month(date)) %>%
+          count(month_num) %>%
+          arrange(month_num) %>%
+          pull(month_num)
+        
+        clicked_month <- months[round(click_data$x)]
+        values$selected_month <- clicked_month
+        values$drill_level <- "day"
+      }
+    }
+  })
+  
+  # Reset drill-down when filters change
+  observeEvent(list(input$date_range, input$year, input$month, input$period, 
+                   input$artist, input$album, input$track), {
+    values$drill_level <- "year"
+    values$selected_year <- NULL
+    values$selected_month <- NULL
+  })
+  
+  # Add a reset button functionality (double-click to reset)
+  observeEvent(input$time_plot_dblclick, {
+    values$drill_level <- "year"
+    values$selected_year <- NULL
+    values$selected_month <- NULL
   })
 
   output$top_artists <- renderPlot({
